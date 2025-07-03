@@ -10,35 +10,42 @@
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {},
   "attributes": {
     "name": {
-      "type": "string",
-      "required": true,
-      "maxLength": 255
+      "type": "string"
     },
-    "description": {
-      "type": "text"
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
     },
-    "price": {
-      "type": "decimal",
-      "required": true,
-      "min": 0
+    "price_formula": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::price-formula.price-formula",
+      "inversedBy": "products"
     },
-    "sku": {
-      "type": "string",
-      "unique": true,
-      "required": true
+    "price_variables": {
+      "type": "json"
     },
-    "productType": {
-      "type": "enumeration",
-      "enum": [
-        "simple",
-        "bundle",
-        "kit"
-      ],
-      "default": "simple",
-      "required": true
+    "final_price": {
+      "type": "decimal"
+    },
+    "attributes": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.attribute"
+    },
+    "filter_values": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::filter-value.filter-value",
+      "mappedBy": "products"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::category.category",
+      "mappedBy": "product"
     },
     "image": {
       "type": "media",
@@ -48,52 +55,28 @@
         "images"
       ]
     },
-    "inStock": {
-      "type": "boolean",
-      "default": true
-    },
-    "stockQuantity": {
-      "type": "integer",
-      "min": 0,
-      "default": 0
-    },
-    "weight": {
-      "type": "decimal",
-      "min": 0
-    },
-    "isBundle": {
-      "type": "boolean",
-      "default": false
-    },
-    "bundleProducts": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::product.product"
-    },
-    "orderItems": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::order-item.order-item",
-      "mappedBy": "product"
-    },
-    "categories": {
+    "category": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::category.category",
-      "mappedBy": "products"
+      "inversedBy": "products"
     },
-    "primary_category": {
+    "description": {
+      "type": "text"
+    },
+    "brand": {
+      "type": "string"
+    },
+    "category_main": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::category.category"
     },
-    "brand": {
+    "order_items": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::brand.brand"
-    },
-    "product_discount": {
-      "type": "decimal"
+      "relation": "oneToMany",
+      "target": "api::order-item.order-item",
+      "mappedBy": "product"
     }
   }
 }

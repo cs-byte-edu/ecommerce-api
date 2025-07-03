@@ -1,0 +1,25 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_promos",
+  "info": {
+    "singularName": "page-promo",
+    "pluralName": "page-promos",
+    "displayName": "Page promo",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "banner": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.featured-products",
+        "sections.section-category"
+      ]
+    }
+  }
+}

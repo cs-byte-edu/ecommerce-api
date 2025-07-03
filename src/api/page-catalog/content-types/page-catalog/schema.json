@@ -1,0 +1,20 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_catalogs",
+  "info": {
+    "singularName": "page-catalog",
+    "pluralName": "page-catalogs",
+    "displayName": "Page catalog"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "catalog_products": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.section-category"
+      ]
+    }
+  }
+}

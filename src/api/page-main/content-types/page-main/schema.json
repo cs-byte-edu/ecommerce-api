@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_mains",
+  "info": {
+    "singularName": "page-main",
+    "pluralName": "page-mains",
+    "displayName": "Page main"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "section": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.featured-products",
+        "sections.section-category"
+      ]
+    }
+  }
+}

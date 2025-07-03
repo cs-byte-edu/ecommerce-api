@@ -4,8 +4,7 @@
   "info": {
     "singularName": "filter-group",
     "pluralName": "filter-groups",
-    "displayName": "FilterGroup",
-    "description": ""
+    "displayName": "FilterGroup"
   },
   "options": {
     "draftAndPublish": true
@@ -31,11 +30,6 @@
       "relation": "oneToMany",
       "target": "api::filter-value.filter-value",
       "mappedBy": "filter_group"
-    },
-    "default_filters": {
-      "type": "component",
-      "repeatable": false,
-      "component": "shared.filter-value"
     }
   }
 }

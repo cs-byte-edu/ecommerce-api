@@ -4,51 +4,63 @@
  * `home-populate` middleware
  */
 
-const populate_ = {
-  section_block: {
-    populate: "*",
-  },
-};
-
 const populate = {
-  section_block: {
-    on: {
-      "layout.section-category": {
+  featured_products: {
+    populate: {
+      categories: {
+        fields: ["id", "name", "slug", "description"],
         populate: {
-          category: {
+          products: {
+            fields: ["slug", "name", "id", "final_price"],
+          },
+        },
+      },
+    },
+  },
+  deals: {
+    populate: {
+      categories: {
+        fields: ["id", "name", "slug", "description"],
+        populate: {
+          products: {
+            fields: [
+              "id",
+              "name",
+              "slug",
+              "final_price",
+              "brand",
+              "description",
+            ],
+            populate: "*", // або замініть '*' на конкретні поля, якщо хочете бути точним
+          },
+        },
+      },
+    },
+  },
+  benefits: {
+    populate: {
+      benefits: {
+        fields: ["id", "title", "description"],
+        populate: {
+          image: {
+            fields: ["url", "alternativeText"],
+          },
+        },
+      },
+    },
+  },
+  products_popular: {
+    populate: {
+      categories: {
+        populate: {
+          products: {
             populate: {
-              products: {
-                populate: ["brand", "image", "primary_category"],
+              image: {
+                fields: ["url", "alternativeText"],
               },
-            },
-          },
-        },
-      },
-      "layout.section-benefits": {
-        populate: {
-          benefits: {
-            populate: {
-              image: true,
-            },
-          },
-        },
-      },
-      "blocks.category-tabs": {
-        populate: {
-          category: {
-            populate: {
-              products: {
-                populate: ["brand", "image", "primary_category"],
+              category_main: {
+                fields: ["name"],
               },
-            },
-          },
-        },
-      },
-      "blocks.category-card": {
-        populate: {
-          category: {
-            populate: {
-              children: true,
             },
           },
         },
@@ -56,11 +68,24 @@ const populate = {
     },
   },
 };
-// TODO: sort
+
 module.exports = (config, { strapi }) => {
   // Add your own logic here.
   return async (ctx, next) => {
     strapi.log.info("In home-populate middleware.");
+    if (!ctx.query) {
+      ctx.query = {};
+    }
+
+    // Об'єднуємо існуючі параметри з нашим populate
+    // ctx.query = {
+    //   ...ctx.query,
+    //   populate: {
+    //     ...ctx.query.populate,
+    //     ...populate.populate,
+    //   },
+    // };
+
     ctx.query.populate = populate;
     await next();
   };

@@ -17,6 +17,12 @@
     "value": {
       "type": "string"
     },
+    "products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "inversedBy": "filter_values"
+    },
     "filter_group": {
       "type": "relation",
       "relation": "manyToOne",

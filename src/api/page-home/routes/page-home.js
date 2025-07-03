@@ -1,5 +1,7 @@
 "use strict";
 
+// const middlewares = require("../../../../config/middlewares");
+
 /**
  * page-home router
  */
