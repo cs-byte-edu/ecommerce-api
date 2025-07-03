@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "filter_values",
+  "info": {
+    "singularName": "filter-value",
+    "pluralName": "filter-values",
+    "displayName": "FilterValue"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "slug": {
+      "type": "uid",
+      "targetField": "value"
+    },
+    "value": {
+      "type": "string"
+    },
+    "filter_group": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::filter-group.filter-group",
+      "inversedBy": "filter_values"
+    }
+  }
+}

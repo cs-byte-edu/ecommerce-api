@@ -1,0 +1,71 @@
+{
+  "kind": "collectionType",
+  "collectionName": "order_items",
+  "info": {
+    "singularName": "order-item",
+    "pluralName": "order-items",
+    "displayName": "Order Item",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "quantity": {
+      "type": "integer",
+      "required": true,
+      "min": 1
+    },
+    "unitPrice": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "totalPrice": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "productName": {
+      "type": "string",
+      "required": true
+    },
+    "productSku": {
+      "type": "string"
+    },
+    "productType": {
+      "type": "enumeration",
+      "enum": [
+        "simple",
+        "bundle",
+        "kit"
+      ],
+      "required": true
+    },
+    "discount": {
+      "type": "decimal",
+      "min": 0,
+      "default": 0
+    },
+    "notes": {
+      "type": "text"
+    },
+    "bundleData": {
+      "type": "json",
+      "description": "Stores bundle composition when product is a bundle"
+    },
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "inversedBy": "orderItems"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "orderItems"
+    }
+  }
+}

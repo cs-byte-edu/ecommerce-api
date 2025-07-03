@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_layout_section_categories",
+  "info": {
+    "displayName": "Section category"
+  },
+  "options": {},
+  "attributes": {
+    "section_heading": {
+      "type": "string"
+    },
+    "section_description": {
+      "type": "text"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    }
+  }
+}

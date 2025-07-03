@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_blocks_category_tabs",
+  "info": {
+    "displayName": "Category tabs",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    }
+  }
+}

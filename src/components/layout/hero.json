@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_layout_heroes",
+  "info": {
+    "displayName": "Hero",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "typography": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.heading"
+    },
+    "hero_img": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

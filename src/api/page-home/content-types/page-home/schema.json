@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_homes",
+  "info": {
+    "singularName": "page-home",
+    "pluralName": "page-homes",
+    "displayName": "Page home",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "section_block": {
+      "type": "dynamiczone",
+      "components": [
+        "layout.hero",
+        "blocks.category-card",
+        "layout.section-category",
+        "blocks.category-tabs",
+        "layout.section-benefits"
+      ]
+    }
+  }
+}
