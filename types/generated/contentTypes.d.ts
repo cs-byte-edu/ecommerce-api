@@ -865,7 +865,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    brand: Schema.Attribute.String & Schema.Attribute.Required;
+    brand: Schema.Attribute.Relation<'oneToOne', 'api::brand.brand'>;
     bundle: Schema.Attribute.Component<'product.product-set', true>;
     cart_items: Schema.Attribute.Relation<
       'oneToMany',

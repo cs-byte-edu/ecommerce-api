@@ -66,10 +66,6 @@
       "default": 0,
       "min": 0
     },
-    "brand": {
-      "type": "string",
-      "required": true
-    },
     "primary_category": {
       "type": "relation",
       "relation": "oneToOne",
@@ -112,6 +108,11 @@
       },
       "component": "product.product-set",
       "repeatable": true
+    },
+    "brand": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::brand.brand"
     }
   }
 }
