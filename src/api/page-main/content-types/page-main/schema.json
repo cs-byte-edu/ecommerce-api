@@ -9,12 +9,16 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
-    "section": {
+    "title": {
+      "type": "string"
+    },
+    "main_content": {
       "type": "dynamiczone",
       "components": [
-        "sections.featured-products",
-        "sections.section-category"
+        "sections.section-category",
+        "sections.section-content"
       ]
     }
   }

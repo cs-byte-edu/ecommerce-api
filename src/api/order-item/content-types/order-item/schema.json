@@ -4,12 +4,13 @@
   "info": {
     "singularName": "order-item",
     "pluralName": "order-items",
-    "displayName": "OrderItem",
+    "displayName": "Order Item",
     "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
     "order": {
       "type": "relation",
@@ -17,21 +18,23 @@
       "target": "api::order.order",
       "inversedBy": "order_items"
     },
+    "quantity": {
+      "type": "integer",
+      "required": true,
+      "default": 1,
+      "min": 1
+    },
+    "price": {
+      "type": "decimal",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
     "product": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::product.product",
       "inversedBy": "order_items"
-    },
-    "quantity": {
-      "type": "integer",
-      "default": 1,
-      "required": true,
-      "min": 1
-    },
-    "price_at_purchase": {
-      "type": "decimal",
-      "required": true
     }
   }
 }

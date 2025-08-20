@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_sections_section_contents",
+  "info": {
+    "displayName": "Section content"
+  },
+  "options": {},
+  "attributes": {
+    "content_categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::content-category.content-category"
+    },
+    "content_heading": {
+      "type": "string"
+    },
+    "content_description": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

@@ -12,7 +12,6 @@ module.exports = {
 async function updateFinalPrice(product) {
   if (!product.id) return;
 
-  // Завантажуємо повні дані з усіма полями
   const fullProduct = await strapi.entityService.findOne(
     "api::product.product",
     product.id,
@@ -37,9 +36,9 @@ async function updateFinalPrice(product) {
     data: { final_price: computed },
   });
 
-  strapi.log.info(
-    `Updated final_price to ${computed} for product ID ${fullProduct.id}`
-  );
+  //   strapi.log.info(
+  //     `Updated final_price to ${computed} for product ID ${fullProduct.id}`
+  //   );
 }
 
 function getFormulaId(rel) {
@@ -92,12 +91,13 @@ async function computeFinalPrice(data) {
     return;
   }
 
-  const formula = await strapi.db
-    .query("api::price-formula.price-formula")
-    .findOne({
-      where: { id: formulaID },
-      select: ["expression"],
-    });
+  const formula = await strapi.entityService.findOne(
+    "api::price-formula.price-formula",
+    formulaID,
+    {
+      fields: ["expression"],
+    }
+  );
 
   if (!formula?.expression) {
     strapi.log.warn("No expression found for formula ID:", formulaID);

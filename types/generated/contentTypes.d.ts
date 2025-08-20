@@ -34,6 +34,10 @@ export interface AdminApiToken extends Struct.CollectionTypeSchema {
         minLength: 1;
       }> &
       Schema.Attribute.DefaultTo<''>;
+    encryptedKey: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
     expiresAt: Schema.Attribute.DateTime;
     lastUsedAt: Schema.Attribute.DateTime;
     lifespan: Schema.Attribute.BigInteger;
@@ -369,36 +373,6 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiBenefitBenefit extends Struct.CollectionTypeSchema {
-  collectionName: 'benefits';
-  info: {
-    displayName: 'Benefit';
-    pluralName: 'benefits';
-    singularName: 'benefit';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    description: Schema.Attribute.Text;
-    image: Schema.Attribute.Media<'images'>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::benefit.benefit'
-    > &
-      Schema.Attribute.Private;
-    name: Schema.Attribute.String;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiBrandBrand extends Struct.CollectionTypeSchema {
   collectionName: 'brands';
   info: {
@@ -448,7 +422,7 @@ export interface ApiCartItemCartItem extends Struct.CollectionTypeSchema {
   collectionName: 'cart_items';
   info: {
     description: '';
-    displayName: 'CartItem';
+    displayName: 'Cart Item';
     pluralName: 'cart-items';
     singularName: 'cart-item';
   };
@@ -467,7 +441,7 @@ export interface ApiCartItemCartItem extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     price_at_time: Schema.Attribute.Decimal;
-    product: Schema.Attribute.Relation<'oneToOne', 'api::product.product'>;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     quantity: Schema.Attribute.Integer &
       Schema.Attribute.Required &
@@ -537,38 +511,102 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
     description: Schema.Attribute.Text;
     icon: Schema.Attribute.Media<'images'>;
     image: Schema.Attribute.Media<'images'>;
-    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    is_active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::category.category'
     > &
       Schema.Attribute.Private;
-    name: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 255;
-      }>;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
     parent: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
-    path: Schema.Attribute.String;
     products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
-    seoDescription: Schema.Attribute.Text &
+    seo_description: Schema.Attribute.Text &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 500;
       }>;
-    seoTitle: Schema.Attribute.String &
+    seo_title: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 255;
       }>;
-    shortDescription: Schema.Attribute.String &
+    short_description: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 500;
       }>;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
-    sortOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     type: Schema.Attribute.Enumeration<['product', 'marketing', 'goals']> &
       Schema.Attribute.DefaultTo<'product'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiContentCategoryContentCategory
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'content_categories';
+  info: {
+    displayName: 'Content category';
+    pluralName: 'content-categories';
+    singularName: 'content-category';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category_description: Schema.Attribute.Text;
+    category_name: Schema.Attribute.String;
+    content_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::content-item.content-item'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::content-category.content-category'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'category_name'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiContentItemContentItem extends Struct.CollectionTypeSchema {
+  collectionName: 'content_items';
+  info: {
+    displayName: 'Content item';
+    pluralName: 'content-items';
+    singularName: 'content-item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    content_category: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::content-category.content-category'
+    >;
+    content_description: Schema.Attribute.Text;
+    content_heading: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::content-item.content-item'
+    > &
+      Schema.Attribute.Private;
+    media: Schema.Attribute.Media<'images' | 'videos'>;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -579,7 +617,7 @@ export interface ApiFilterGroupFilterGroup extends Struct.CollectionTypeSchema {
   collectionName: 'filter_groups';
   info: {
     description: '';
-    displayName: 'FilterGroup';
+    displayName: 'Filter Group';
     pluralName: 'filter-groups';
     singularName: 'filter-group';
   };
@@ -590,7 +628,6 @@ export interface ApiFilterGroupFilterGroup extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    default_filters: Schema.Attribute.Component<'shared.filter-value', false>;
     filter_values: Schema.Attribute.Relation<
       'oneToMany',
       'api::filter-value.filter-value'
@@ -614,7 +651,8 @@ export interface ApiFilterGroupFilterGroup extends Struct.CollectionTypeSchema {
 export interface ApiFilterValueFilterValue extends Struct.CollectionTypeSchema {
   collectionName: 'filter_values';
   info: {
-    displayName: 'FilterValue';
+    description: '';
+    displayName: 'Filter Value';
     pluralName: 'filter-values';
     singularName: 'filter-value';
   };
@@ -653,14 +691,21 @@ export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
     singularName: 'order-item';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   attributes: {
-    bundleData: Schema.Attribute.JSON;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    discount: Schema.Attribute.Decimal &
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::order-item.order-item'
+    > &
+      Schema.Attribute.Private;
+    order: Schema.Attribute.Relation<'manyToOne', 'api::order.order'>;
+    price: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
         {
           min: 0;
@@ -668,19 +713,7 @@ export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
         number
       > &
       Schema.Attribute.DefaultTo<0>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::order-item.order-item'
-    > &
-      Schema.Attribute.Private;
-    notes: Schema.Attribute.Text;
-    order: Schema.Attribute.Relation<'manyToOne', 'api::order.order'>;
     product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
-    productName: Schema.Attribute.String & Schema.Attribute.Required;
-    productSku: Schema.Attribute.String;
-    productType: Schema.Attribute.Enumeration<['simple', 'bundle', 'kit']> &
-      Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     quantity: Schema.Attribute.Integer &
       Schema.Attribute.Required &
@@ -689,23 +722,8 @@ export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
           min: 1;
         },
         number
-      >;
-    totalPrice: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      >;
-    unitPrice: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      >;
+      > &
+      Schema.Attribute.DefaultTo<1>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -721,110 +739,64 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     singularName: 'order';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   attributes: {
-    billingAddress: Schema.Attribute.JSON;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    currency: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'UAH'>;
-    customerEmail: Schema.Attribute.Email & Schema.Attribute.Required;
-    customerInfo: Schema.Attribute.JSON;
-    customerPhone: Schema.Attribute.String;
-    deliveredDate: Schema.Attribute.DateTime;
-    discountAmount: Schema.Attribute.Decimal &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      > &
-      Schema.Attribute.DefaultTo<0>;
+    customer_email: Schema.Attribute.Email;
+    customer_name: Schema.Attribute.String;
+    customer_phone: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'> &
       Schema.Attribute.Private;
-    notes: Schema.Attribute.Text;
-    orderDate: Schema.Attribute.DateTime & Schema.Attribute.Required;
-    orderItems: Schema.Attribute.Relation<
+    order_date: Schema.Attribute.DateTime;
+    order_items: Schema.Attribute.Relation<
       'oneToMany',
       'api::order-item.order-item'
     >;
-    orderNumber: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    paymentMethod: Schema.Attribute.String;
-    paymentStatus: Schema.Attribute.Enumeration<
-      ['pending', 'paid', 'failed', 'refunded', 'partially_refunded']
+    order_number: Schema.Attribute.String;
+    order_status: Schema.Attribute.Enumeration<
+      ['pending', 'processing', 'shipped', 'delivered', 'cancelled']
     > &
       Schema.Attribute.DefaultTo<'pending'>;
-    publishedAt: Schema.Attribute.DateTime;
-    shippedDate: Schema.Attribute.DateTime;
-    shippingAddress: Schema.Attribute.JSON;
-    shippingAmount: Schema.Attribute.Decimal &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      > &
-      Schema.Attribute.DefaultTo<0>;
-    status: Schema.Attribute.Enumeration<
+    payment_method: Schema.Attribute.Enumeration<
       [
-        'pending',
-        'confirmed',
-        'processing',
-        'shipped',
-        'delivered',
-        'cancelled',
-        'refunded',
+        'cash_on_delivery',
+        'card_online',
+        'apple_pay',
+        'google_pay',
+        'liqpay',
+        'monobank',
+        'privat24',
       ]
-    > &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'pending'>;
-    subtotal: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      >;
-    taxAmount: Schema.Attribute.Decimal &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      > &
-      Schema.Attribute.DefaultTo<0>;
-    totalAmount: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      >;
-    trackingNumber: Schema.Attribute.String;
+    >;
+    payment_status: Schema.Attribute.Enumeration<
+      ['pending', 'paid', 'failed', 'refunded']
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    shipping_address: Schema.Attribute.Text;
+    shipping_method: Schema.Attribute.Enumeration<
+      ['nova_poshta', 'ukr_poshta']
+    >;
+    total_amount: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    user_account: Schema.Attribute.Relation<
+    users_permissions_user: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.user'
     >;
   };
 }
 
-export interface ApiPageAboutPageAbout extends Struct.SingleTypeSchema {
-  collectionName: 'page_abouts';
+export interface ApiPageMainPageMain extends Struct.SingleTypeSchema {
+  collectionName: 'page_mains';
   info: {
-    displayName: 'Page about';
-    pluralName: 'page-abouts';
-    singularName: 'page-about';
+    displayName: 'Page main';
+    pluralName: 'page-mains';
+    singularName: 'page-main';
   };
   options: {
     draftAndPublish: true;
@@ -836,76 +808,13 @@ export interface ApiPageAboutPageAbout extends Struct.SingleTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::page-about.page-about'
+      'api::page-main.page-main'
     > &
       Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiPageContactPageContact extends Struct.SingleTypeSchema {
-  collectionName: 'page_contacts';
-  info: {
-    displayName: 'Page contact';
-    pluralName: 'page-contacts';
-    singularName: 'page-contact';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::page-contact.page-contact'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiPageHomePageHome extends Struct.SingleTypeSchema {
-  collectionName: 'page_homes';
-  info: {
-    description: '';
-    displayName: 'Page home';
-    pluralName: 'page-homes';
-    singularName: 'page-home';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::page-home.page-home'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    section_block: Schema.Attribute.DynamicZone<
-      [
-        'layout.hero',
-        'blocks.category-card',
-        'layout.section-category',
-        'blocks.category-tabs',
-        'layout.section-benefits',
-      ]
+    main_content: Schema.Attribute.DynamicZone<
+      ['sections.section-category', 'sections.section-content']
     >;
+    publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -918,7 +827,7 @@ export interface ApiPriceFormulaPriceFormula
   collectionName: 'price_formulas';
   info: {
     description: '';
-    displayName: 'PriceFormula';
+    displayName: 'Price Formula';
     pluralName: 'price-formulas';
     singularName: 'price-formula';
   };
@@ -938,7 +847,6 @@ export interface ApiPriceFormulaPriceFormula
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
-    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -949,19 +857,19 @@ export interface ApiPriceFormulaPriceFormula
 export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   collectionName: 'products';
   info: {
-    description: '';
     displayName: 'Product';
     pluralName: 'products';
     singularName: 'product';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
-    brand: Schema.Attribute.Relation<'oneToOne', 'api::brand.brand'>;
-    bundleProducts: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::product.product'
+    brand: Schema.Attribute.String & Schema.Attribute.Required;
+    bundle: Schema.Attribute.Component<'product.product-set', true>;
+    cart_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::cart-item.cart-item'
     >;
     categories: Schema.Attribute.Relation<
       'manyToMany',
@@ -971,9 +879,8 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
+    final_price: Schema.Attribute.Decimal;
     image: Schema.Attribute.Media<'images'>;
-    inStock: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    isBundle: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -985,31 +892,30 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 255;
       }>;
-    orderItems: Schema.Attribute.Relation<
+    order_items: Schema.Attribute.Relation<
       'oneToMany',
       'api::order-item.order-item'
     >;
-    price: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      >;
+    price_formula: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::price-formula.price-formula'
+    >;
+    price_variables: Schema.Attribute.JSON & Schema.Attribute.Required;
     primary_category: Schema.Attribute.Relation<
       'oneToOne',
       'api::category.category'
     >;
+    product_attributes: Schema.Attribute.Component<'product.attribute', true>;
     product_discount: Schema.Attribute.Decimal;
-    productType: Schema.Attribute.Enumeration<['simple', 'bundle', 'kit']> &
+    product_type: Schema.Attribute.Enumeration<['simple', 'bundle', 'kit']> &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'simple'>;
     publishedAt: Schema.Attribute.DateTime;
     sku: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
-    stockQuantity: Schema.Attribute.Integer &
+    slug: Schema.Attribute.UID<'name'>;
+    stock_quantity: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<
         {
           min: 0;
@@ -1020,13 +926,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    weight: Schema.Attribute.Decimal &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      >;
   };
 }
 
@@ -1692,18 +1591,17 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::benefit.benefit': ApiBenefitBenefit;
       'api::brand.brand': ApiBrandBrand;
       'api::cart-item.cart-item': ApiCartItemCartItem;
       'api::cart.cart': ApiCartCart;
       'api::category.category': ApiCategoryCategory;
+      'api::content-category.content-category': ApiContentCategoryContentCategory;
+      'api::content-item.content-item': ApiContentItemContentItem;
       'api::filter-group.filter-group': ApiFilterGroupFilterGroup;
       'api::filter-value.filter-value': ApiFilterValueFilterValue;
       'api::order-item.order-item': ApiOrderItemOrderItem;
       'api::order.order': ApiOrderOrder;
-      'api::page-about.page-about': ApiPageAboutPageAbout;
-      'api::page-contact.page-contact': ApiPageContactPageContact;
-      'api::page-home.page-home': ApiPageHomePageHome;
+      'api::page-main.page-main': ApiPageMainPageMain;
       'api::price-formula.price-formula': ApiPriceFormulaPriceFormula;
       'api::product.product': ApiProductProduct;
       'plugin::content-releases.release': PluginContentReleasesRelease;

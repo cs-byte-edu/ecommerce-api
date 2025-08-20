@@ -10,37 +10,79 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
     "order_date": {
       "type": "datetime"
     },
+    "order_number": {
+      "type": "string"
+    },
     "order_status": {
       "type": "enumeration",
+      "default": "pending",
       "enum": [
-        "pending, ",
-        "processing, ",
-        "shipped, ",
-        "delivered, ",
+        "pending",
+        "processing",
+        "shipped",
+        "delivered",
         "cancelled"
       ]
     },
-    "total_amount": {
-      "type": "decimal"
+    "customer_name": {
+      "type": "string"
     },
-    "shipping_address": {
-      "type": "text"
+    "customer_email": {
+      "type": "email"
     },
-    "user_account": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "orders"
+    "customer_phone": {
+      "type": "string"
     },
     "order_items": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::order-item.order-item",
       "mappedBy": "order"
+    },
+    "total_amount": {
+      "type": "decimal"
+    },
+    "shipping_method": {
+      "type": "enumeration",
+      "enum": [
+        "nova_poshta",
+        "ukr_poshta"
+      ]
+    },
+    "shipping_address": {
+      "type": "text"
+    },
+    "payment_method": {
+      "type": "enumeration",
+      "enum": [
+        "cash_on_delivery",
+        "card_online",
+        "apple_pay",
+        "google_pay",
+        "liqpay",
+        "monobank",
+        "privat24"
+      ]
+    },
+    "payment_status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "paid",
+        "failed",
+        "refunded"
+      ]
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "orders"
     }
   }
 }

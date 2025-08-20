@@ -4,7 +4,8 @@
   "info": {
     "singularName": "filter-group",
     "pluralName": "filter-groups",
-    "displayName": "FilterGroup"
+    "displayName": "Filter Group",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true

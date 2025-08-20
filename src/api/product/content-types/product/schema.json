@@ -4,48 +4,54 @@
   "info": {
     "singularName": "product",
     "pluralName": "products",
-    "displayName": "Product",
-    "description": ""
+    "displayName": "Product"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
+  "pluginOptions": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "maxLength": 255,
+      "required": true
+    },
+    "description": {
+      "type": "text"
     },
     "slug": {
       "type": "uid",
       "targetField": "name"
     },
-    "price_formula": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::price-formula.price-formula",
-      "inversedBy": "products"
+    "sku": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "product_type": {
+      "type": "enumeration",
+      "required": true,
+      "default": "simple",
+      "enum": [
+        "simple",
+        "bundle",
+        "kit"
+      ]
     },
     "price_variables": {
-      "type": "json"
+      "type": "json",
+      "required": true
+    },
+    "product_discount": {
+      "type": "decimal"
     },
     "final_price": {
       "type": "decimal"
     },
-    "attributes": {
+    "product_attributes": {
       "type": "component",
-      "repeatable": true,
-      "component": "product.attribute"
-    },
-    "filter_values": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::filter-value.filter-value",
-      "mappedBy": "products"
-    },
-    "categories": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::category.category",
-      "mappedBy": "product"
+      "component": "product.attribute",
+      "repeatable": true
     },
     "image": {
       "type": "media",
@@ -55,28 +61,57 @@
         "images"
       ]
     },
-    "category": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::category.category",
-      "inversedBy": "products"
-    },
-    "description": {
-      "type": "text"
+    "stock_quantity": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
     },
     "brand": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
-    "category_main": {
+    "primary_category": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::category.category"
+    },
+    "cart_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::cart-item.cart-item",
+      "mappedBy": "product"
     },
     "order_items": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::order-item.order-item",
       "mappedBy": "product"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "mappedBy": "products"
+    },
+    "price_formula": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::price-formula.price-formula"
+    },
+    "bundle": {
+      "type": "component",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "product_type"
+            },
+            "bundle"
+          ]
+        }
+      },
+      "component": "product.product-set",
+      "repeatable": true
     }
   }
 }

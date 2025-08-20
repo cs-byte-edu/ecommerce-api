@@ -4,12 +4,13 @@
   "info": {
     "singularName": "price-formula",
     "pluralName": "price-formulas",
-    "displayName": "PriceFormula",
+    "displayName": "Price Formula",
     "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
     "name": {
       "type": "string"
@@ -19,12 +20,6 @@
     },
     "expression": {
       "type": "string"
-    },
-    "products": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product",
-      "mappedBy": "price_formula"
     }
   }
 }

@@ -1,101 +1,77 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
-export interface BlocksCategoryCard extends Struct.ComponentSchema {
-  collectionName: 'components_blocks_category_cards';
+export interface ProductAttribute extends Struct.ComponentSchema {
+  collectionName: 'components_product_attributes';
   info: {
-    description: '';
-    displayName: 'Category Card';
+    displayName: 'attribute';
   };
   attributes: {
-    category: Schema.Attribute.Relation<'oneToOne', 'api::category.category'>;
-    heading: Schema.Attribute.String;
+    key: Schema.Attribute.String;
+    value: Schema.Attribute.String;
   };
 }
 
-export interface BlocksCategoryTabs extends Struct.ComponentSchema {
-  collectionName: 'components_blocks_category_tabs';
+export interface ProductProductSet extends Struct.ComponentSchema {
+  collectionName: 'components_product_product_sets';
   info: {
-    description: '';
-    displayName: 'Category tabs';
+    displayName: 'bundle item';
   };
-  attributes: {
-    category: Schema.Attribute.Relation<'oneToOne', 'api::category.category'>;
-    description: Schema.Attribute.Text;
-    heading: Schema.Attribute.String;
-  };
+  attributes: {};
 }
 
-export interface LayoutHero extends Struct.ComponentSchema {
-  collectionName: 'components_layout_heroes';
-  info: {
-    description: '';
-    displayName: 'Hero';
-  };
-  attributes: {
-    hero_img: Schema.Attribute.Media<'images'>;
-    typography: Schema.Attribute.Component<'shared.heading', true>;
-  };
-}
-
-export interface LayoutSectionBenefits extends Struct.ComponentSchema {
-  collectionName: 'components_layout_section_benefits';
-  info: {
-    description: '';
-    displayName: 'Section benefits';
-  };
-  attributes: {
-    benefits: Schema.Attribute.Relation<'oneToMany', 'api::benefit.benefit'>;
-    section_description: Schema.Attribute.Text;
-    section_heading: Schema.Attribute.String;
-  };
-}
-
-export interface LayoutSectionCategory extends Struct.ComponentSchema {
-  collectionName: 'components_layout_section_categories';
+export interface SectionsSectionCategory extends Struct.ComponentSchema {
+  collectionName: 'components_sections_section_categories';
   info: {
     displayName: 'Section category';
   };
   attributes: {
-    category: Schema.Attribute.Relation<'oneToOne', 'api::category.category'>;
+    section_categories: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::category.category'
+    >;
     section_description: Schema.Attribute.Text;
     section_heading: Schema.Attribute.String;
+    section_type: Schema.Attribute.Enumeration<
+      ['block', 'tabs', 'accordion', 'carousel']
+    >;
   };
 }
 
-export interface SharedFilterValue extends Struct.ComponentSchema {
-  collectionName: 'components_shared_filter_values';
+export interface SectionsSectionContent extends Struct.ComponentSchema {
+  collectionName: 'components_sections_section_contents';
   info: {
-    displayName: 'Filter value';
+    displayName: 'Section content';
   };
   attributes: {
-    label: Schema.Attribute.String & Schema.Attribute.Required;
-    type: Schema.Attribute.Enumeration<['select', 'checkbox', 'radio']> &
-      Schema.Attribute.Required;
+    content_categories: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::content-category.content-category'
+    >;
+    content_description: Schema.Attribute.Text;
+    content_heading: Schema.Attribute.String;
   };
 }
 
-export interface SharedHeading extends Struct.ComponentSchema {
-  collectionName: 'components_shared_headings';
+export interface SharedLink extends Struct.ComponentSchema {
+  collectionName: 'components_shared_links';
   info: {
     description: '';
-    displayName: 'Typography';
+    displayName: 'Link';
   };
   attributes: {
-    type: Schema.Attribute.Enumeration<['h1', 'h2', 'h3', 'h4', 'h5', 'p']>;
-    typography_content: Schema.Attribute.Text;
+    href: Schema.Attribute.String;
+    label: Schema.Attribute.String;
   };
 }
 
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
-      'blocks.category-card': BlocksCategoryCard;
-      'blocks.category-tabs': BlocksCategoryTabs;
-      'layout.hero': LayoutHero;
-      'layout.section-benefits': LayoutSectionBenefits;
-      'layout.section-category': LayoutSectionCategory;
-      'shared.filter-value': SharedFilterValue;
-      'shared.heading': SharedHeading;
+      'product.attribute': ProductAttribute;
+      'product.product-set': ProductProductSet;
+      'sections.section-category': SectionsSectionCategory;
+      'sections.section-content': SectionsSectionContent;
+      'shared.link': SharedLink;
     }
   }
 }
