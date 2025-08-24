@@ -791,6 +791,66 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPageCatalogPageCatalog extends Struct.SingleTypeSchema {
+  collectionName: 'page_catalogs';
+  info: {
+    displayName: 'Page catalog';
+    pluralName: 'page-catalogs';
+    singularName: 'page-catalog';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    catalog_aside_categories: Schema.Attribute.Component<
+      'sections.section-category',
+      true
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-catalog.page-catalog'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPageCategoryPageCategory extends Struct.SingleTypeSchema {
+  collectionName: 'page_categories';
+  info: {
+    displayName: 'Page category';
+    pluralName: 'page-categories';
+    singularName: 'page-category';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-category.page-category'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiPageMainPageMain extends Struct.SingleTypeSchema {
   collectionName: 'page_mains';
   info: {
@@ -814,6 +874,34 @@ export interface ApiPageMainPageMain extends Struct.SingleTypeSchema {
     main_content: Schema.Attribute.DynamicZone<
       ['sections.section-category', 'sections.section-content']
     >;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPageProductPageProduct extends Struct.SingleTypeSchema {
+  collectionName: 'page_products';
+  info: {
+    displayName: 'Page single product';
+    pluralName: 'page-products';
+    singularName: 'page-product';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-product.page-product'
+    > &
+      Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
@@ -1601,7 +1689,10 @@ declare module '@strapi/strapi' {
       'api::filter-value.filter-value': ApiFilterValueFilterValue;
       'api::order-item.order-item': ApiOrderItemOrderItem;
       'api::order.order': ApiOrderOrder;
+      'api::page-catalog.page-catalog': ApiPageCatalogPageCatalog;
+      'api::page-category.page-category': ApiPageCategoryPageCategory;
       'api::page-main.page-main': ApiPageMainPageMain;
+      'api::page-product.page-product': ApiPageProductPageProduct;
       'api::price-formula.price-formula': ApiPriceFormulaPriceFormula;
       'api::product.product': ApiProductProduct;
       'plugin::content-releases.release': PluginContentReleasesRelease;

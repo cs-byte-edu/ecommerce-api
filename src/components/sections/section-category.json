@@ -22,7 +22,8 @@
         "block",
         "tabs",
         "accordion",
-        "carousel"
+        "carousel",
+        "menu"
       ]
     }
   },

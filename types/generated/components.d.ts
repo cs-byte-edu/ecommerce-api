@@ -32,7 +32,7 @@ export interface SectionsSectionCategory extends Struct.ComponentSchema {
     section_description: Schema.Attribute.Text;
     section_heading: Schema.Attribute.String;
     section_type: Schema.Attribute.Enumeration<
-      ['block', 'tabs', 'accordion', 'carousel']
+      ['block', 'tabs', 'accordion', 'carousel', 'menu']
     >;
   };
 }

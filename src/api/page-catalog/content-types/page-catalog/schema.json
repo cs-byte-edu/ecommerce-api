@@ -1,0 +1,23 @@
+{
+  "kind": "singleType",
+  "collectionName": "page_catalogs",
+  "info": {
+    "singularName": "page-catalog",
+    "pluralName": "page-catalogs",
+    "displayName": "Page catalog"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "catalog_aside_categories": {
+      "type": "component",
+      "component": "sections.section-category",
+      "repeatable": true
+    }
+  }
+}
