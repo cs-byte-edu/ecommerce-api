@@ -11,14 +11,13 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "category_name": {
+    "name": {
       "type": "string"
     },
     "slug": {
-      "type": "uid",
-      "targetField": "category_name"
+      "type": "uid"
     },
-    "category_description": {
+    "description": {
       "type": "text"
     },
     "content_items": {

@@ -556,8 +556,6 @@ export interface ApiContentCategoryContentCategory
     draftAndPublish: true;
   };
   attributes: {
-    category_description: Schema.Attribute.Text;
-    category_name: Schema.Attribute.String;
     content_items: Schema.Attribute.Relation<
       'oneToMany',
       'api::content-item.content-item'
@@ -565,14 +563,16 @@ export interface ApiContentCategoryContentCategory
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::content-category.content-category'
     > &
       Schema.Attribute.Private;
+    name: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'category_name'>;
+    slug: Schema.Attribute.UID;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -594,11 +594,10 @@ export interface ApiContentItemContentItem extends Struct.CollectionTypeSchema {
       'manyToOne',
       'api::content-category.content-category'
     >;
-    content_description: Schema.Attribute.Text;
-    content_heading: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -606,6 +605,7 @@ export interface ApiContentItemContentItem extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     media: Schema.Attribute.Media<'images' | 'videos'>;
+    name: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

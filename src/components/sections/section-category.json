@@ -23,7 +23,8 @@
         "tabs",
         "accordion",
         "carousel",
-        "menu"
+        "menu",
+        "card"
       ]
     }
   },

@@ -11,10 +11,10 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "content_heading": {
+    "name": {
       "type": "string"
     },
-    "content_description": {
+    "description": {
       "type": "text"
     },
     "content_category": {

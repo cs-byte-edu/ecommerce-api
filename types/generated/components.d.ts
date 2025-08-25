@@ -32,7 +32,7 @@ export interface SectionsSectionCategory extends Struct.ComponentSchema {
     section_description: Schema.Attribute.Text;
     section_heading: Schema.Attribute.String;
     section_type: Schema.Attribute.Enumeration<
-      ['block', 'tabs', 'accordion', 'carousel', 'menu']
+      ['block', 'tabs', 'accordion', 'carousel', 'menu', 'card']
     >;
   };
 }
@@ -47,8 +47,8 @@ export interface SectionsSectionContent extends Struct.ComponentSchema {
       'oneToMany',
       'api::content-category.content-category'
     >;
-    content_description: Schema.Attribute.Text;
-    content_heading: Schema.Attribute.String;
+    description: Schema.Attribute.Text;
+    name: Schema.Attribute.String;
   };
 }
 

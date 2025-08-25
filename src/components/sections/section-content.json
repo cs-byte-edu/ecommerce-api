@@ -10,10 +10,10 @@
       "relation": "oneToMany",
       "target": "api::content-category.content-category"
     },
-    "content_heading": {
+    "name": {
       "type": "string"
     },
-    "content_description": {
+    "description": {
       "type": "text"
     }
   },
